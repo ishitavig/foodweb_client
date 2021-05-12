@@ -1,4 +1,10 @@
-import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
+import {
+  AppBar,
+  IconButton,
+  Toolbar,
+  Typography,
+  Avatar,
+} from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 
@@ -10,6 +16,11 @@ const Header = (props) => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6">FoodWeb</Typography>
+        <div style={{ marginLeft: "auto", marginRight: 0 }}>
+          <Avatar alt="user" style={{ backgroundColor: "#000000" }}>
+            U
+          </Avatar>
+        </div>
       </Toolbar>
     </AppBar>
   );
