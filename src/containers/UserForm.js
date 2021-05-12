@@ -1,6 +1,9 @@
 import { Paper, TextField, Typography, Button } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { setUser } from "../store/actions/usersAction";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 const UserForm = (props) => {
   const [formDetails, setFormDetails] = useState({
@@ -20,11 +23,28 @@ const UserForm = (props) => {
   }, [props.match.url]);
 
   const handleSubmit = async () => {
-    const result = await axios.post(
-      "http://localhost:9000/users/signup",
-      formDetails
-    );
-    console.log(result, "result");
+    if (isSignUp) {
+      const result = await axios.post(
+        "http://localhost:9000/users/signup",
+        formDetails
+      );
+    } else {
+      const result = await axios
+        .post("http://localhost:9000/users/signin", formDetails)
+        .then((res) => {
+          if (res.data && res.data.token) {
+            res.data && props.setUser(res.data);
+            localStorage.setItem("user", res.data.token);
+            props.history.push("/");
+          }
+        })
+        .catch((error) =>
+          console.error(
+            `There was an error logging in user ${formDetails.email} note: ${error}`
+          )
+        );
+      console.log(result, "result");
+    }
   };
 
   return (
@@ -96,4 +116,18 @@ const UserForm = (props) => {
   );
 };
 
-export default UserForm;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUser: (data) => dispatch(setUser(data)),
+  };
+};
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(UserForm)
+);
