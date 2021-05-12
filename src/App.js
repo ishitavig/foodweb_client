@@ -1,19 +1,24 @@
 import MainLayout from "./containers/MainLayout";
-import { Route, Switch, BrowserRouter } from "react-router-dom";
+import { Route, Switch, withRouter } from "react-router-dom";
 import LandingPage from "./containers/LandingPage";
+import UserForm from "./containers/UserForm";
 
 const App = () => {
   return (
     <div>
-      <BrowserRouter>
-        <Switch>
-          <Route path="/">
-            <MainLayout component={LandingPage} />
-          </Route>
-        </Switch>
-      </BrowserRouter>
+      <Switch>
+        <Route exact path="/">
+          <MainLayout component={LandingPage} />
+        </Route>
+        <Route exact path="/signup">
+          <MainLayout component={UserForm} />
+        </Route>
+        <Route exact path="/signin">
+          <MainLayout component={UserForm} />
+        </Route>
+      </Switch>
     </div>
   );
 };
 
-export default App;
+export default withRouter(App);
