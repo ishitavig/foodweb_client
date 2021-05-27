@@ -6,6 +6,8 @@ import jwt from "jsonwebtoken";
 import store from "./store/index";
 import React, { useEffect } from "react";
 import { setUser } from "./store/actions/usersAction";
+import Blogs from "./containers/Blogs";
+import BlogFrom from "./containers/BlogForm";
 
 const App = () => {
   useEffect(() => {
@@ -35,6 +37,12 @@ const App = () => {
         </Route>
         <Route exact path="/signin">
           <MainLayout component={UserForm} />
+        </Route>
+        <Route exact path="/blogs">
+          <MainLayout component={Blogs} />
+        </Route>
+        <Route exact path="/createBlog">
+          <MainLayout component={BlogFrom} />
         </Route>
       </Switch>
     </div>

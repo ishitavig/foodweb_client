@@ -12,6 +12,7 @@ const Footer = (props) => {
         textAlign: "center",
         backgroundColor: "black",
         color: "white",
+        marginTop: 20,
       }}
     >
       <FontAwesomeIcon icon={faCopyright} /> FoodWeb 2021. All rights reserved.

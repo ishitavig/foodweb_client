@@ -59,7 +59,12 @@ const Header = (props) => {
           <Button style={{ marginRight: 10, color: "white" }}>
             Restaurant Bookings/ Order Online
           </Button>
-          <Button style={{ marginRight: 10, color: "white" }}>Blogs</Button>
+          <Button
+            style={{ marginRight: 10, color: "white" }}
+            onClick={() => props.history.push("/blogs")}
+          >
+            Blogs
+          </Button>
         </div>
         <div style={{ marginLeft: "auto", marginRight: 0 }}>
           {!signedIn ? (
