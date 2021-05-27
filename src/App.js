@@ -11,7 +11,7 @@ const App = () => {
   useEffect(() => {
     const decodeToken = async () => {
       const token = localStorage.getItem("user");
-      const decoded = token ? jwt.verify(token, "secretcode") : {};
+      const decoded = token ? jwt.verify(token, "foodwebsecretcode") : {};
 
       if (
         decoded &&

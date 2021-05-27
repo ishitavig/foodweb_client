@@ -49,7 +49,18 @@ const Header = (props) => {
         <IconButton edge="start" color="inherit" aria-label="menu">
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6">FoodWeb</Typography>
+        <div
+          onClick={() => props.history.push("/")}
+          style={{ cursor: "pointer" }}
+        >
+          <Typography variant="h6">FoodWeb</Typography>
+        </div>
+        <div style={{ position: "absolute", right: "15%" }} className="row">
+          <Button style={{ marginRight: 10, color: "white" }}>
+            Restaurant Bookings/ Order Online
+          </Button>
+          <Button style={{ marginRight: 10, color: "white" }}>Blogs</Button>
+        </div>
         <div style={{ marginLeft: "auto", marginRight: 0 }}>
           {!signedIn ? (
             <>

@@ -11,6 +11,7 @@
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
+    "@types/socket.io-client": "^1.4.36",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
@@ -23,6 +24,7 @@
     "react-scripts": "4.0.3",
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
+    "socket.io-client": "^4.1.1",
     "web-vitals": "^1.1.1"
   },
   "scripts": {

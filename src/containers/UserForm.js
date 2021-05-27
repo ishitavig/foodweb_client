@@ -1,4 +1,12 @@
-import { Paper, TextField, Typography, Button } from "@material-ui/core";
+import {
+  Paper,
+  TextField,
+  Typography,
+  Button,
+  FormGroup,
+  FormControlLabel,
+  Switch,
+} from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { setUser } from "../store/actions/usersAction";
@@ -6,11 +14,16 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 const UserForm = (props) => {
+  const [isCustomer, setIsCustomer] = useState(true);
   const [formDetails, setFormDetails] = useState({
     name: "",
     email: "",
     password: "",
     mobile: "",
+    customer: true,
+    abn: "",
+    tableBookingStatus: 0,
+    foodOrderStatus: 0,
   });
   const [isSignUp, setIsSignUp] = useState(false);
 
@@ -23,14 +36,22 @@ const UserForm = (props) => {
   }, [props.match.url]);
 
   const handleSubmit = async () => {
+    setFormDetails({ ...formDetails, customer: isCustomer });
     if (isSignUp) {
-      const result = await axios.post(
-        "http://localhost:9000/users/signup",
+      return await axios.post(
+        `http://localhost:9000/users/${
+          isCustomer ? "customer" : "business"
+        }/signup`,
         formDetails
       );
     } else {
-      const result = await axios
-        .post("http://localhost:9000/users/signin", formDetails)
+      return await axios
+        .post(
+          `http://localhost:9000/users/${
+            isCustomer ? "customer" : "business"
+          }/signin`,
+          formDetails
+        )
         .then((res) => {
           if (res.data && res.data.token) {
             res.data && props.setUser(res.data);
@@ -43,7 +64,6 @@ const UserForm = (props) => {
             `There was an error logging in user ${formDetails.email} note: ${error}`
           )
         );
-      console.log(result, "result");
     }
   };
 
@@ -57,7 +77,10 @@ const UserForm = (props) => {
         }}
       >
         <div style={{ width: "100%", textAlign: "center", margin: "auto" }}>
-          <Typography variant="h3">Sign {isSignUp ? "Up" : "In"}</Typography>
+          <Typography variant="h3">
+            Sign {isSignUp ? "Up" : "In"} as{" "}
+            {isCustomer ? "Customer" : "Business"}
+          </Typography>
           {isSignUp && (
             <TextField
               placeholder="Name"
@@ -82,21 +105,75 @@ const UserForm = (props) => {
             placeholder="Password"
             variant="standard"
             style={{ width: "80%", margin: 20 }}
+            type="password"
             value={formDetails.password}
             onChange={(e) =>
               setFormDetails({ ...formDetails, password: e.target.value })
             }
           />
           {isSignUp && (
-            <TextField
-              placeholder="Mobile"
-              variant="standard"
-              style={{ width: "80%", margin: 20 }}
-              value={formDetails.mobile}
-              onChange={(e) =>
-                setFormDetails({ ...formDetails, mobile: e.target.value })
-              }
-            />
+            <>
+              <TextField
+                placeholder="Mobile"
+                variant="standard"
+                style={{ width: "80%", margin: 20 }}
+                value={formDetails.mobile}
+                onChange={(e) =>
+                  setFormDetails({ ...formDetails, mobile: e.target.value })
+                }
+              />
+              {!isCustomer && (
+                <>
+                  <TextField
+                    placeholder="ABN"
+                    variant="standard"
+                    style={{ width: "80%", margin: 20 }}
+                    value={formDetails.abn}
+                    onChange={(e) =>
+                      setFormDetails({ ...formDetails, abn: e.target.value })
+                    }
+                  />
+                  <FormGroup
+                    row
+                    style={{
+                      width: "80%",
+                      margin: "auto",
+                    }}
+                  >
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={formDetails.tableBookingStatus === 1}
+                          onChange={() => {
+                            setFormDetails({
+                              ...formDetails,
+                              tableBookingStatus:
+                                formDetails.tableBookingStatus === 1 ? 0 : 1,
+                            });
+                          }}
+                        />
+                      }
+                      label="Allow Table Booking"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={formDetails.foodOrderStatus === 1}
+                          onChange={() => {
+                            setFormDetails({
+                              ...formDetails,
+                              foodOrderStatus:
+                                formDetails.foodOrderStatus === 1 ? 0 : 1,
+                            });
+                          }}
+                        />
+                      }
+                      label="Allow Online Food Orders"
+                    />
+                  </FormGroup>
+                </>
+              )}
+            </>
           )}
         </div>
         <Button
@@ -107,9 +184,53 @@ const UserForm = (props) => {
             backgroundColor: "maroon",
             color: "white",
           }}
-          onClick={handleSubmit}
+          onClick={() => {
+            if (isCustomer) {
+              handleSubmit();
+            } else {
+              setFormDetails({
+                name: "",
+                email: "",
+                password: "",
+                mobile: "",
+                customer: true,
+                abn: "",
+                tableBookingStatus: 0,
+                foodOrderStatus: 0,
+              });
+              setIsCustomer(true);
+            }
+          }}
         >
-          Sign {isSignUp ? "Up" : "In"}
+          Sign {isSignUp ? "Up" : "In"} {!isCustomer ? "as Customer" : ""}
+        </Button>
+        <Button
+          variant="contained"
+          style={{
+            textTransform: "inherit",
+            margin: 20,
+            backgroundColor: "maroon",
+            color: "white",
+          }}
+          onClick={() => {
+            if (isCustomer) {
+              setFormDetails({
+                name: "",
+                email: "",
+                password: "",
+                mobile: "",
+                customer: false,
+                abn: "",
+                tableBookingStatus: 0,
+                foodOrderStatus: 0,
+              });
+              setIsCustomer(false);
+            } else {
+              handleSubmit();
+            }
+          }}
+        >
+          Sign {isSignUp ? "Up" : "In"} {isCustomer ? "as Business" : ""}
         </Button>
       </Paper>
     </div>
