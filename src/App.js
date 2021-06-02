@@ -8,7 +8,7 @@ import LandingPage from "./containers/LandingPage";
 import UserForm from "./containers/UserForm";
 import Blogs from "./containers/Blogs";
 import BlogFrom from "./containers/BlogForm";
-import Restaurants from "./containers/Restaurants";
+import RestaurantOption from "./containers/RestaurantOption";
 
 const App = () => {
   useEffect(() => {
@@ -46,7 +46,7 @@ const App = () => {
           <MainLayout component={BlogFrom} />
         </Route>
         <Route exact path="/restaurants">
-          <MainLayout component={Restaurants} />
+          <MainLayout component={RestaurantOption} />
         </Route>
       </Switch>
     </div>

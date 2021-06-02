@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Paper, Card, Typography } from "@material-ui/core";
+import { Paper, Card, Typography, Button } from "@material-ui/core";
 import moment from "moment";
+import TableBooking from "../../components/TableBookingForm";
 
 const Restaurants = (props) => {
   const [restaurants, setRestaurants] = useState([]);
+  const [bookTable, setBookTable] = useState(false);
+  const [selectedRestaurant, setSelectedRestaurant] = useState({});
 
   useEffect(() => {
     const fetchRestaurants = async () => {
@@ -26,12 +29,11 @@ const Restaurants = (props) => {
         <div>No restaurants</div>
       ) : (
         restaurants.map((restaurant) => {
-          console.log(restaurant, "restaurant");
           const openFrom = moment(restaurant.openingHoursFrom);
           const openTo = moment(restaurant.openingHoursTo);
           return (
             <>
-              <div className="text-center">
+              <div className="text-center" key={restaurant.businessId}>
                 <Paper
                   style={{
                     width: "50%",
@@ -69,9 +71,25 @@ const Restaurants = (props) => {
                           : "No information available"}
                       </b>
                     </Typography>
+                    <Button
+                      variant="contained"
+                      style={{ marginRight: 10 }}
+                      onClick={() => {
+                        setSelectedRestaurant(restaurant);
+                        setBookTable(!bookTable);
+                      }}
+                    >
+                      Book a Table
+                    </Button>
+                    <Button variant="contained">Order Food</Button>
                   </Card>
                 </Paper>
               </div>
+              <TableBooking
+                open={bookTable}
+                setOpen={setBookTable}
+                restaurant={selectedRestaurant}
+              />
             </>
           );
         })

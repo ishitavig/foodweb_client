@@ -1,6 +1,6 @@
 import {
   AppBar,
-  IconButton,
+  // IconButton,
   Toolbar,
   Typography,
   Avatar,
@@ -8,7 +8,7 @@ import {
   Menu,
   MenuItem,
 } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
+// import MenuIcon from "@material-ui/icons/Menu";
 import { withRouter } from "react-router";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
