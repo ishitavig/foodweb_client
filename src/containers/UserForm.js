@@ -6,12 +6,18 @@ import {
   FormGroup,
   FormControlLabel,
   Switch,
+  Grid,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { setUser } from "../store/actions/usersAction";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 const UserForm = (props) => {
   const [isCustomer, setIsCustomer] = useState(true);
@@ -24,6 +30,9 @@ const UserForm = (props) => {
     abn: "",
     tableBookingStatus: 0,
     foodOrderStatus: 0,
+    address: "",
+    openingHoursFrom: "",
+    openingHoursTo: "",
   });
   const [isSignUp, setIsSignUp] = useState(false);
 
@@ -133,6 +142,50 @@ const UserForm = (props) => {
                       setFormDetails({ ...formDetails, abn: e.target.value })
                     }
                   />
+                  <TextField
+                    placeholder="Address"
+                    variant="standard"
+                    style={{ width: "80%", margin: 20 }}
+                    value={formDetails.address}
+                    onChange={(e) =>
+                      setFormDetails({
+                        ...formDetails,
+                        address: e.target.value,
+                      })
+                    }
+                  />
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Grid container justify="space-around">
+                      <KeyboardTimePicker
+                        margin="normal"
+                        label="Opening Hours From"
+                        value={formDetails.openingHoursFrom}
+                        onChange={(date) =>
+                          setFormDetails({
+                            ...formDetails,
+                            openingHoursFrom: date,
+                          })
+                        }
+                        KeyboardButtonProps={{
+                          "aria-label": "change time",
+                        }}
+                      />
+                      <KeyboardTimePicker
+                        margin="normal"
+                        label="Opening Hours To"
+                        value={formDetails.openingHoursTo}
+                        onChange={(date) =>
+                          setFormDetails({
+                            ...formDetails,
+                            openingHoursTo: date,
+                          })
+                        }
+                        KeyboardButtonProps={{
+                          "aria-label": "change time",
+                        }}
+                      />
+                    </Grid>
+                  </MuiPickersUtilsProvider>
                   <FormGroup
                     row
                     style={{

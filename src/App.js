@@ -1,13 +1,14 @@
 import MainLayout from "./containers/MainLayout";
 import { Route, Switch, withRouter } from "react-router-dom";
-import LandingPage from "./containers/LandingPage";
-import UserForm from "./containers/UserForm";
 import jwt from "jsonwebtoken";
 import store from "./store/index";
 import React, { useEffect } from "react";
 import { setUser } from "./store/actions/usersAction";
+import LandingPage from "./containers/LandingPage";
+import UserForm from "./containers/UserForm";
 import Blogs from "./containers/Blogs";
 import BlogFrom from "./containers/BlogForm";
+import Restaurants from "./containers/Restaurants";
 
 const App = () => {
   useEffect(() => {
@@ -43,6 +44,9 @@ const App = () => {
         </Route>
         <Route exact path="/createBlog">
           <MainLayout component={BlogFrom} />
+        </Route>
+        <Route exact path="/restaurants">
+          <MainLayout component={Restaurants} />
         </Route>
       </Switch>
     </div>

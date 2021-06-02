@@ -46,17 +46,22 @@ const Header = (props) => {
       style={{ backgroundColor: "maroon", marginBottom: 20 }}
     >
       <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="menu">
+        {/* <IconButton edge="start" color="inherit" aria-label="menu">
           <MenuIcon />
-        </IconButton>
+        </IconButton> */}
         <div
           onClick={() => props.history.push("/")}
           style={{ cursor: "pointer" }}
         >
-          <Typography variant="h6">FoodWeb</Typography>
+          <Typography variant="h6" style={{ fontFamily: "cursive" }}>
+            FoodWeb
+          </Typography>
         </div>
         <div style={{ position: "absolute", right: "15%" }} className="row">
-          <Button style={{ marginRight: 10, color: "white" }}>
+          <Button
+            style={{ marginRight: 10, color: "white" }}
+            onClick={() => props.history.push("/restaurants")}
+          >
             Restaurant Bookings/ Order Online
           </Button>
           <Button

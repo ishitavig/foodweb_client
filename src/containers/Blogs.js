@@ -3,6 +3,7 @@ import { Add } from "@material-ui/icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
+import blogBackground from "../assets/images/blogBackground.jpg";
 
 const Blogs = (props) => {
   const [blogList, setBlogList] = useState([]);
@@ -28,7 +29,6 @@ const Blogs = (props) => {
           className="col-3"
           style={{
             border: "2px solid black",
-            height: "87vh",
             marginLeft: 20,
             boxShadow:
               "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
@@ -58,7 +58,13 @@ const Blogs = (props) => {
           {blogList.length === 0 ? (
             <Typography variant="h6">No blogs</Typography>
           ) : (
-            <div style={{ overflow: "scroll", height: "85%" }}>
+            <div
+              style={{
+                maxHeight: "85%",
+                overflowY: "scroll",
+                minHeight: "750px",
+              }}
+            >
               {blogList.map((blog) => {
                 return (
                   <>
@@ -81,10 +87,21 @@ const Blogs = (props) => {
         <div className="col-8" style={{ marginLeft: "auto" }}>
           {viewBlog && (
             <>
-              <Paper style={{ marginBottom: 20, padding: 20 }}>
+              <Paper
+                style={{
+                  marginBottom: 20,
+                  padding: 20,
+                  backgroundImage: `url(${blogBackground})`,
+                }}
+              >
                 <Typography
                   variant="h5"
-                  style={{ fontWeight: "bold", fontFamily: "cursive" }}
+                  style={{
+                    fontWeight: "bold",
+                    fontFamily: "cursive",
+                    color: "white",
+                    textAlign: "center",
+                  }}
                 >
                   {viewBlog.heading}
                 </Typography>
