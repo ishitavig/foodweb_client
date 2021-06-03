@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 const Header = (props) => {
   const [signedIn, setSignedIn] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [name, setName] = useState("");
 
   useEffect(() => {
     if (props.user && Object.keys(props.user).length !== 0) {
@@ -23,6 +24,10 @@ const Header = (props) => {
     } else {
       setSignedIn(false);
     }
+  }, [props.user]);
+
+  useEffect(() => {
+    setName(props.user.name);
   }, [props.user]);
 
   const handleClick = (event) => {
@@ -66,6 +71,12 @@ const Header = (props) => {
           </Button>
           <Button
             style={{ marginRight: 10, color: "white" }}
+            onClick={() => props.history.push("/advertisements")}
+          >
+            Advertisements
+          </Button>
+          <Button
+            style={{ marginRight: 10, color: "white" }}
             onClick={() => props.history.push("/blogs")}
           >
             Blogs
@@ -105,9 +116,7 @@ const Header = (props) => {
                 style={{ backgroundColor: "#000000" }}
                 onClick={handleClick}
               >
-                {props.user && props.user.name
-                  ? props.user.name.slice(0, 1)
-                  : ""}
+                {name ? name.slice(0, 1) : ""}
               </Avatar>
               <Menu
                 id="simple-menu"
@@ -118,6 +127,9 @@ const Header = (props) => {
               >
                 <MenuItem style={{ fontWeight: "bold" }}>
                   {props.user ? props.user.name : ""}
+                </MenuItem>
+                <MenuItem onClick={() => props.history.push("/profile")}>
+                  Profile
                 </MenuItem>
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
               </Menu>

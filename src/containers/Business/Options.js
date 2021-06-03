@@ -161,7 +161,7 @@ const Options = (props) => {
                 Food Menu
               </Typography>
               <div style={{ position: "absolute", top: 5, right: 50 }}>
-                <Tooltip title="Create New Blog" aria-label="add">
+                <Tooltip title="Create New Item" aria-label="add">
                   <Fab color="secondary" onClick={() => setAddItem(true)}>
                     <Add />
                   </Fab>
@@ -236,6 +236,7 @@ const Options = (props) => {
             open={addItem}
             setOpen={setAddItem}
             edit={editing}
+            setEditing={setEditing}
             item={selectedItem}
             updateItem={(data) => handleUpdateItem(data)}
           />

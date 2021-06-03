@@ -9,6 +9,8 @@ import UserForm from "./containers/UserForm";
 import Blogs from "./containers/Blogs";
 import BlogFrom from "./containers/BlogForm";
 import RestaurantOption from "./containers/RestaurantOption";
+import Advertisements from "./containers/Business/Advertisements";
+import Profile from "./containers/Profile";
 
 const App = () => {
   const token = localStorage.getItem("user");
@@ -46,6 +48,12 @@ const App = () => {
         </Route>
         <Route exact path="/restaurants">
           <MainLayout component={RestaurantOption} />
+        </Route>
+        <Route exact path="/advertisements">
+          <MainLayout component={Advertisements} />
+        </Route>
+        <Route exact path="/profile">
+          <MainLayout component={Profile} />
         </Route>
       </Switch>
     </div>

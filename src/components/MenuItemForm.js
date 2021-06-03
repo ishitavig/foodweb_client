@@ -29,6 +29,21 @@ const MenuItemForm = (props) => {
   });
 
   useEffect(() => {
+    setOpenForm(open);
+  }, [open]);
+
+  const handleClose = () => {
+    setOpenForm(false);
+    props.setOpen(false);
+    props.setEditing(false);
+    setItemDetails({
+      name: "",
+      price: "",
+      availabilityStatus: 1,
+    });
+  };
+
+  useEffect(() => {
     if (props.edit) {
       setEditing(props.edit);
       setItemDetails({
@@ -40,20 +55,6 @@ const MenuItemForm = (props) => {
       setEditing(false);
     }
   }, [props.edit, props.item]);
-
-  useEffect(() => {
-    setOpenForm(open);
-  }, [open]);
-
-  const handleClose = () => {
-    setOpenForm(false);
-    props.setOpen(false);
-    setItemDetails({
-      name: "",
-      price: "",
-      availabilityStatus: 1,
-    });
-  };
 
   const handleAddItem = async () => {
     if (props.user && props.user.user && props.user.user.businessId) {
