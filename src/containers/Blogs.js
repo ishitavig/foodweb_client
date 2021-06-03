@@ -8,7 +8,6 @@ import blogBackground from "../assets/images/blogBackground.jpg";
 const Blogs = (props) => {
   const [blogList, setBlogList] = useState([]);
   const [viewBlog, setViewBlog] = useState(null);
-  console.log(viewBlog, "view");
 
   useEffect(() => {
     const fetchBlogs = async () => {

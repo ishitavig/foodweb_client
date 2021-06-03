@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import MenuItemForm from "../../components/MenuItemForm";
 import axios from "axios";
 import ConfirmDialog from "../../components/ConfirmDialog";
+import { updateUser } from "../../store/actions/usersAction";
 
 const Options = (props) => {
   const [tableBooking, setTableBooking] = useState(0);
@@ -31,7 +32,7 @@ const Options = (props) => {
       setTableBooking(+props.user.user.tableBookingStatus);
       setOnlineFoodOrder(+props.user.user.foodOrderStatus);
     }
-  }, [props.user]);
+  }, []);
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -66,6 +67,38 @@ const Options = (props) => {
     );
   };
 
+  const updateTableBooking = async () => {
+    setTableBooking(tableBooking === 1 ? 0 : 1);
+    await axios.put(
+      `http://localhost:9000/users/business/${props.user.user.businessId}`,
+      { tableBookingStatus: tableBooking === 1 ? 0 : 1 }
+    );
+    if (props.user && props.user.user) {
+      props.updateUser(
+        props.user.user.businessId ? "business" : "customer",
+        props.user.user.businessId
+          ? props.user.user.businessId
+          : props.user.user.customerId
+      );
+    }
+  };
+
+  const updateOnlineFoodOrder = async () => {
+    setOnlineFoodOrder(onlineFoodOrder === 1 ? 0 : 1);
+    await axios.put(
+      `http://localhost:9000/users/business/${props.user.user.businessId}`,
+      { foodOrderStatus: onlineFoodOrder === 1 ? 0 : 1 }
+    );
+    if (props.user && props.user.user) {
+      props.updateUser(
+        props.user.user.businessId ? "business" : "customer",
+        props.user.user.businessId
+          ? props.user.user.businessId
+          : props.user.user.customerId
+      );
+    }
+  };
+
   return (
     <div className="text-center col-12">
       <Paper
@@ -87,7 +120,7 @@ const Options = (props) => {
               <Switch
                 checked={tableBooking === 1}
                 onChange={() => {
-                  setTableBooking(tableBooking === 1 ? 0 : 1);
+                  updateTableBooking();
                 }}
               />
             }
@@ -98,7 +131,7 @@ const Options = (props) => {
               <Switch
                 checked={onlineFoodOrder === 1}
                 onChange={() => {
-                  setOnlineFoodOrder(onlineFoodOrder === 1 ? 0 : 1);
+                  updateOnlineFoodOrder();
                 }}
               />
             }
@@ -225,7 +258,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    updateUser: (userType, userId) => dispatch(updateUser(userType, userId)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Options);

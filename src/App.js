@@ -11,11 +11,10 @@ import BlogFrom from "./containers/BlogForm";
 import RestaurantOption from "./containers/RestaurantOption";
 
 const App = () => {
+  const token = localStorage.getItem("user");
   useEffect(() => {
     const decodeToken = async () => {
-      const token = localStorage.getItem("user");
       const decoded = token ? jwt.verify(token, "foodwebsecretcode") : {};
-
       if (
         decoded &&
         Object.keys(decoded).length !== 0 &&
@@ -25,7 +24,7 @@ const App = () => {
       }
     };
     decodeToken();
-  }, []);
+  }, [token]);
 
   return (
     <div>

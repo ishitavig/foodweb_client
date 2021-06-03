@@ -44,15 +44,27 @@ const UserForm = (props) => {
     }
   }, [props.match.url]);
 
+  useEffect(() => {
+    if (
+      props.user &&
+      props.user.user &&
+      Object.keys(props.user.user).length !== 0
+    ) {
+      props.history.push("/");
+    }
+  }, [props.user]);
+
   const handleSubmit = async () => {
     setFormDetails({ ...formDetails, customer: isCustomer });
     if (isSignUp) {
-      return await axios.post(
-        `http://localhost:9000/users/${
-          isCustomer ? "customer" : "business"
-        }/signup`,
-        formDetails
-      );
+      return await axios
+        .post(
+          `http://localhost:9000/users/${
+            isCustomer ? "customer" : "business"
+          }/signup`,
+          formDetails
+        )
+        .then(() => props.history.push("/"));
     } else {
       return await axios
         .post(
