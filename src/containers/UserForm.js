@@ -84,6 +84,7 @@ const UserForm = (props) => {
             props.history.push("/");
           } else {
             res.data && setPasswordError(!res.data.signin);
+            console.log(res, "res");
           }
         })
         .catch((error) =>

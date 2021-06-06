@@ -23,7 +23,7 @@ const MenuItemForm = (props) => {
   const [openForm, setOpenForm] = useState(false);
   const [editing, setEditing] = useState(false);
   const [itemDetails, setItemDetails] = useState({
-    name: "",
+    itemName: "",
     price: "",
     availabilityStatus: 1,
   });
@@ -37,7 +37,7 @@ const MenuItemForm = (props) => {
     props.setOpen(false);
     props.setEditing(false);
     setItemDetails({
-      name: "",
+      itemName: "",
       price: "",
       availabilityStatus: 1,
     });
@@ -47,7 +47,7 @@ const MenuItemForm = (props) => {
     if (props.edit) {
       setEditing(props.edit);
       setItemDetails({
-        name: props.item.name,
+        itemName: props.item.itemName,
         price: props.item.price,
         availabilityStatus: props.item.availabilityStatus || 0,
       });
@@ -70,11 +70,13 @@ const MenuItemForm = (props) => {
           `http://localhost:9000/restaurants/addMenuItem/${props.user.user.businessId}`,
           itemDetails
         );
+        props.updateItem({ ...props.item, ...itemDetails });
+        handleClose();
       }
     }
 
     setItemDetails({
-      name: "",
+      itemName: "",
       price: "",
       availabilityStatus: 1,
     });
@@ -100,9 +102,9 @@ const MenuItemForm = (props) => {
             }}
           >
             <TextField
-              value={itemDetails.name}
+              value={itemDetails.itemName}
               onChange={(e) =>
-                setItemDetails({ ...itemDetails, name: e.target.value })
+                setItemDetails({ ...itemDetails, itemName: e.target.value })
               }
               placeholder="Name"
               style={{ width: "90%", margin: 20 }}

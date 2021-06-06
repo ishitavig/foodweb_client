@@ -9,6 +9,7 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { updateUser } from "../store/actions/usersAction";
 
 const FoodOrderForm = (props) => {
@@ -50,7 +51,7 @@ const FoodOrderForm = (props) => {
           if (res.error) {
             alert(res.error.message);
           } else {
-            props.updateUser("business", props.user.businessId);
+            props.history.push("/restaurants");
           }
         });
     }
@@ -100,4 +101,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FoodOrderForm);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(FoodOrderForm)
+);

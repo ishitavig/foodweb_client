@@ -108,7 +108,7 @@ const FoodOrder = (props) => {
                         height: 50,
                       }}
                     >
-                      <Typography>{item.name}</Typography>
+                      <Typography>{item.itemName}</Typography>
                       <ButtonGroup style={{ position: "absolute", right: 20 }}>
                         <Button
                           onClick={() => {

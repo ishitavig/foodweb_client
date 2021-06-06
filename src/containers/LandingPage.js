@@ -41,27 +41,28 @@ const LandingPage = (props) => {
       <img src={Logo} width="20%" alt="logo" />
       <div className="row" style={{ width: "100%" }}>
         <div className="col-2 text-center">
-          {lhsAds.map((ad) => {
-            return (
-              <>
-                <Card
-                  elevation={3}
-                  style={{
-                    padding: 20,
-                    backgroundColor: "maroon",
-                    color: "white",
-                    width: "100%",
-                    margin: 20,
-                  }}
-                >
-                  <Typography variant="h5" style={{ fontFamily: "cursive" }}>
-                    {ad.heading}
-                  </Typography>
-                  <Typography variant="body1">{ad.content}</Typography>
-                </Card>
-              </>
-            );
-          })}
+          {props.user.customerId &&
+            lhsAds.map((ad) => {
+              return (
+                <>
+                  <Card
+                    elevation={3}
+                    style={{
+                      padding: 20,
+                      backgroundColor: "maroon",
+                      color: "white",
+                      width: "100%",
+                      margin: 20,
+                    }}
+                  >
+                    <Typography variant="h5" style={{ fontFamily: "cursive" }}>
+                      {ad.heading}
+                    </Typography>
+                    <Typography variant="body1">{ad.content}</Typography>
+                  </Card>
+                </>
+              );
+            })}
         </div>
         <div className="col-8">
           <div className="col-12 text-center">
@@ -141,27 +142,28 @@ const LandingPage = (props) => {
           </div>
         </div>
         <div className="col-2 text-center">
-          {rhsAds.map((ad) => {
-            return (
-              <>
-                <Card
-                  elevation={3}
-                  style={{
-                    padding: 20,
-                    backgroundColor: "maroon",
-                    color: "white",
-                    width: "100%",
-                    margin: 20,
-                  }}
-                >
-                  <Typography variant="h5" style={{ fontFamily: "cursive" }}>
-                    {ad.heading}
-                  </Typography>
-                  <Typography variant="body1">{ad.content}</Typography>
-                </Card>
-              </>
-            );
-          })}
+          {props.user.customerId &&
+            rhsAds.map((ad) => {
+              return (
+                <>
+                  <Card
+                    elevation={3}
+                    style={{
+                      padding: 20,
+                      backgroundColor: "maroon",
+                      color: "white",
+                      width: "100%",
+                      margin: 20,
+                    }}
+                  >
+                    <Typography variant="h5" style={{ fontFamily: "cursive" }}>
+                      {ad.heading}
+                    </Typography>
+                    <Typography variant="body1">{ad.content}</Typography>
+                  </Card>
+                </>
+              );
+            })}
         </div>
       </div>
       {Object.keys(props.user).length !== 0 && (

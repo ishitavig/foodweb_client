@@ -59,12 +59,19 @@ const Options = (props) => {
     );
   };
 
-  const handleUpdateItem = (data) => {
-    setFoodMenu(
-      foodMenu.map((item) =>
-        +item.itemId === +data.itemId ? { ...item, ...data } : item
-      )
-    );
+  const handleUpdateMenu = (data) => {
+    const existingItem = foodMenu
+      .map((item) => +item.itemId)
+      .includes(data.itemId);
+    if (!existingItem) {
+      setFoodMenu([...foodMenu, data]);
+    } else {
+      setFoodMenu(
+        foodMenu.map((item) =>
+          +item.itemId === +data.itemId ? { ...item, ...data } : item
+        )
+      );
+    }
   };
 
   const updateTableBooking = async () => {
@@ -186,7 +193,7 @@ const Options = (props) => {
                           variant="h5"
                           style={{ fontWeight: "bold", marginRight: 20 }}
                         >
-                          {item.name}
+                          {item.itemName}
                         </Typography>
                         <Typography
                           variant="h6"
@@ -238,7 +245,7 @@ const Options = (props) => {
             edit={editing}
             setEditing={setEditing}
             item={selectedItem}
-            updateItem={(data) => handleUpdateItem(data)}
+            updateItem={(data) => handleUpdateMenu(data)}
           />
           <ConfirmDialog
             open={deleteDialog}

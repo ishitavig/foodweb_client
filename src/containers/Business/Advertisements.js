@@ -46,6 +46,7 @@ const Advertisements = (props) => {
   }, []);
 
   useEffect(() => {
+    console.log(props.user, "user");
     setPlan(props.user.planId);
   }, [props.user]);
 
@@ -106,10 +107,9 @@ const Advertisements = (props) => {
                     <Typography variant="h5" style={{ fontFamily: "cursive" }}>
                       {p.name}
                     </Typography>
-                    <Typography variant="body1">
-                      {p.periodInDays} days
+                    <Typography variant="h5">
+                      $ {p.price} / {p.periodInDays} days
                     </Typography>
-                    <Typography variant="h5">$ 20 / year</Typography>
                     <Button
                       variant="contained"
                       style={{ margin: 10 }}
