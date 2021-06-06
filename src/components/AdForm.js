@@ -26,7 +26,7 @@ const AdForm = (props) => {
   const [openForm, setOpenForm] = useState(false);
   const [adDetails, setAdDetails] = useState({
     heading: "",
-    text: "",
+    content: "",
     visibilityStatus: true,
     startDate: moment(),
     endDate: moment().add("days", 7),
@@ -44,7 +44,7 @@ const AdForm = (props) => {
     props.setEditing(false);
     setAdDetails({
       heading: "",
-      text: "",
+      content: "",
       visibilityStatus: true,
       startDate: moment(),
       endDate: moment().add("days", 7),
@@ -57,7 +57,7 @@ const AdForm = (props) => {
       setEditing(props.edit);
       setAdDetails({
         heading: props.item.heading,
-        text: props.item.text,
+        content: props.item.content,
         visibilityStatus: props.item.visibilityStatus,
         startDate: props.item.startDate,
         endDate: props.item.endDate,
@@ -91,7 +91,7 @@ const AdForm = (props) => {
 
     setAdDetails({
       heading: "",
-      text: "",
+      content: "",
       visibilityStatus: true,
       startDate: moment(),
       endDate: moment().add("days", 7),
@@ -126,9 +126,9 @@ const AdForm = (props) => {
             placeholder="Heading"
           />
           <TextareaAutosize
-            value={adDetails.text}
+            value={adDetails.content}
             onChange={(e) =>
-              setAdDetails({ ...adDetails, text: e.target.value })
+              setAdDetails({ ...adDetails, content: e.target.value })
             }
             style={{ width: "90%", margin: 20, padding: 10 }}
             placeholder="Content"

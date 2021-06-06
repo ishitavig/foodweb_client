@@ -112,7 +112,6 @@ const Restaurants = (props) => {
                     <Typography
                       variant="h6"
                       style={{
-                        cursor: "pointer",
                         margin: 10,
                         fontWeight: "bold",
                       }}
@@ -254,7 +253,12 @@ const Restaurants = (props) => {
                       {restaurant.tableBookingStatus === 1 && (
                         <Button
                           variant="contained"
-                          style={{ marginRight: 10 }}
+                          style={{
+                            textTransform: "inherit",
+                            backgroundColor: "maroon",
+                            color: "white",
+                            marginRight: 10,
+                          }}
                           onClick={() => {
                             setSelectedRestaurant(restaurant);
                             setBookTable(!bookTable);
@@ -270,6 +274,12 @@ const Restaurants = (props) => {
                             props.history.push(
                               `/foodOrder/${restaurant.businessId}`
                             );
+                          }}
+                          style={{
+                            textTransform: "inherit",
+                            backgroundColor: "maroon",
+                            color: "white",
+                            marginRight: 10,
                           }}
                         >
                           Order Food

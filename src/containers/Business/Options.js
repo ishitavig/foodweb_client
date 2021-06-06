@@ -17,6 +17,7 @@ import MenuItemForm from "../../components/MenuItemForm";
 import axios from "axios";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import { updateUser } from "../../store/actions/usersAction";
+import moment from "moment";
 
 const Options = (props) => {
   const [tableBooking, setTableBooking] = useState(0);
@@ -26,6 +27,10 @@ const Options = (props) => {
   const [selectedItem, setSelectedItem] = useState({});
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [tableBookings, setTableBookings] = useState([]);
+  const [foodOrders, setFoodOrders] = useState([]);
+  const [viewOrder, setViewOrder] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(false);
 
   useEffect(() => {
     if (props.user && props.user.user && props.user.user.businessId) {
@@ -106,155 +111,331 @@ const Options = (props) => {
     }
   };
 
+  useEffect(() => {
+    const fetchTableBookings = async () => {
+      await axios
+        .get(
+          `http://localhost:9000/restaurants/getTableBookings/business/${props.user.user.businessId}`
+        )
+        .then((result) => {
+          if (result.data) {
+            setTableBookings(result.data);
+          } else {
+            setTableBookings([]);
+          }
+        });
+    };
+
+    const fetchFoodOrders = async () => {
+      await axios
+        .get(
+          `http://localhost:9000/restaurants/getFoodOrders/business/${props.user.user.businessId}`
+        )
+        .then((result) => {
+          if (result.data) {
+            const groupOrders = result.data.reduce((r, a) => {
+              r[a.orderId] = [...(r[a.orderId] || []), a];
+              return r;
+            }, {});
+            setFoodOrders(Object.entries(groupOrders));
+          } else {
+            setFoodOrders([]);
+          }
+        });
+    };
+
+    fetchTableBookings();
+    fetchFoodOrders();
+  }, []);
+
   return (
-    <div className="text-center col-12">
-      <Paper
+    <div className="row" style={{ width: "95vw" }}>
+      <div
+        className="col-3"
         style={{
-          width: "50%",
-          textAlign: "center",
-          margin: "auto",
+          border: "2px solid black",
+          marginLeft: 20,
+          boxShadow:
+            "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
         }}
       >
-        <Typography
-          variant="h5"
-          style={{ fontFamily: "cursive", color: "maroon" }}
+        <div
+          style={{
+            textAlign: "center",
+            margin: 20,
+            color: "maroon",
+          }}
         >
-          Business Options
-        </Typography>
-        <FormGroup row style={{ paddingLeft: "25%" }}>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={tableBooking === 1}
-                onChange={() => {
-                  updateTableBooking();
-                }}
-              />
-            }
-            label="Allow Table Booking"
-          />
-          <FormControlLabel
-            control={
-              <Switch
-                checked={onlineFoodOrder === 1}
-                onChange={() => {
-                  updateOnlineFoodOrder();
-                }}
-              />
-            }
-            label="Allow Online Food Orders"
-          />
-        </FormGroup>
-      </Paper>
-      <Divider style={{ margin: 20 }} />
-      {onlineFoodOrder === 1 && (
-        <>
-          <Paper
+          <Typography variant="h4" style={{ fontFamily: "cursive" }}>
+            Bookings and Orders
+          </Typography>
+        </div>
+        {tableBookings.length === 0 ? (
+          <Typography variant="h6">No active table bookings</Typography>
+        ) : (
+          <div
             style={{
-              width: "50%",
-              textAlign: "center",
-              margin: "auto",
-              position: "relative",
+              maxHeight: "85%",
+              overflowY: "scroll",
+              minHeight: "300px",
             }}
           >
-            <div
+            <Typography
+              variant="h6"
+              style={{ color: "maroon", fontWeight: "bold" }}
+            >
+              Table Bookings
+            </Typography>
+            {tableBookings.map((tableBooking) => {
+              return (
+                <>
+                  <div>
+                    <Typography
+                      variant="h6"
+                      style={{
+                        margin: 10,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {tableBooking.name}
+                    </Typography>
+                    <Typography variant="body1">
+                      Booking Date and Time:{" "}
+                      <b>
+                        {moment(tableBooking.bookingDateTime).format(
+                          "DD/MM/YYYY hh:mm A"
+                        )}
+                      </b>
+                    </Typography>
+                    <Typography variant="body1">
+                      Guest Count:
+                      <b>{tableBooking.guestCount}</b>
+                    </Typography>
+                    <Typography variant="body1">
+                      Status:
+                      <b>
+                        {+tableBooking.bookingStatus === 1 &&
+                        moment(tableBooking.bookingDateTime).isAfter(moment())
+                          ? "Active"
+                          : "Cancelled or Inactive"}
+                      </b>
+                    </Typography>
+                    <Divider />
+                  </div>
+                </>
+              );
+            })}
+          </div>
+        )}
+        {foodOrders.length === 0 ? (
+          <Typography variant="h6">No active food orders</Typography>
+        ) : (
+          <div
+            style={{
+              maxHeight: "85%",
+              overflowY: "scroll",
+              minHeight: "300px",
+            }}
+          >
+            <Typography
+              variant="h6"
+              style={{ color: "maroon", fontWeight: "bold" }}
+            >
+              Food Orders
+            </Typography>
+            {foodOrders.map((foodOrder) => {
+              return (
+                <>
+                  <Typography
+                    variant="h6"
+                    style={{
+                      cursor: "pointer",
+                      margin: 10,
+                      fontWeight: "bold",
+                    }}
+                    onClick={() => {
+                      setSelectedOrder(foodOrder[1]);
+                      setViewOrder(true);
+                    }}
+                  >
+                    {foodOrder[1] ? foodOrder[1][0].name : ""}
+                  </Typography>
+                  {/* <Typography variant="body1">
+                    Booking Date and Time:{" "}
+                    <b>
+                      {moment(tableBooking.bookingDateTime).format(
+                        "DD/MM/YYYY hh:mm A"
+                      )}
+                    </b>
+                  </Typography>*/}
+                  <Typography variant="body1">
+                    Status:
+                    <b>
+                      {foodOrder[1] && +foodOrder[1][0].orderStatus === 1
+                        ? "Active"
+                        : "Cancelled or Inactive"}
+                    </b>
+                  </Typography>
+                  <Divider />
+                </>
+              );
+            })}
+            <Divider style={{ margin: 20 }} />
+          </div>
+        )}
+      </div>
+      <div className="col-8" style={{ marginLeft: "auto" }}>
+        <Paper
+          style={{
+            width: "100%",
+            textAlign: "center",
+            margin: "auto",
+          }}
+        >
+          <Typography
+            variant="h5"
+            style={{ fontFamily: "cursive", color: "maroon" }}
+          >
+            Business Options
+          </Typography>
+          <FormGroup row style={{ paddingLeft: "25%" }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={tableBooking === 1}
+                  onChange={() => {
+                    updateTableBooking();
+                  }}
+                />
+              }
+              label="Allow Table Booking"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={onlineFoodOrder === 1}
+                  onChange={() => {
+                    updateOnlineFoodOrder();
+                  }}
+                />
+              }
+              label="Allow Online Food Orders"
+            />
+          </FormGroup>
+        </Paper>
+        <Divider style={{ margin: 20 }} />
+        {onlineFoodOrder === 1 && (
+          <>
+            <Paper
               style={{
+                width: "100%",
                 textAlign: "center",
-                margin: 20,
-                color: "maroon",
+                margin: "auto",
+                position: "relative",
               }}
             >
-              <Typography variant="h5" style={{ fontFamily: "cursive" }}>
-                Food Menu
-              </Typography>
-              <div style={{ position: "absolute", top: 5, right: 50 }}>
-                <Tooltip title="Create New Item" aria-label="add">
-                  <Fab color="secondary" onClick={() => setAddItem(true)}>
-                    <Add />
-                  </Fab>
-                </Tooltip>
-              </div>
-            </div>
-            {foodMenu.length === 0 ? (
-              <>
-                <Typography variant="h6">
-                  Currently you have no items in menu. Please add items to view
-                  them in this list.
+              <div
+                style={{
+                  textAlign: "center",
+                  margin: 20,
+                  color: "maroon",
+                }}
+              >
+                <Typography variant="h5" style={{ fontFamily: "cursive" }}>
+                  Food Menu
                 </Typography>
-              </>
-            ) : (
-              <div style={{ padding: 50, position: "relative" }}>
-                {" "}
-                {foodMenu.map((item) => {
-                  return (
-                    <>
-                      <div className="row" style={{ margin: 10 }}>
-                        <Typography
-                          variant="h5"
-                          style={{ fontWeight: "bold", marginRight: 20 }}
-                        >
-                          {item.itemName}
-                        </Typography>
-                        <Typography
-                          variant="h6"
-                          style={{ fontWeight: "bold", marginRight: 20 }}
-                        >
-                          $ {item.price}
-                        </Typography>
-                        <Chip
-                          label={
-                            item.availabilityStatus === 1
-                              ? "Available"
-                              : "Unavailable"
-                          }
-                          disabled={item.availabilityStatus === 0}
-                          style={{ backgroundColor: "maroon", color: "white" }}
-                        />
-                        <div style={{ position: "absolute", right: 150 }}>
-                          <IconButton
-                            onClick={() => {
-                              setSelectedItem(item);
-                              setAddItem(true);
-                              setEditing(true);
-                            }}
-                          >
-                            <Edit style={{ color: "maroon" }} />
-                          </IconButton>
-                        </div>
-                        <div style={{ position: "absolute", right: 100 }}>
-                          <IconButton
-                            onClick={() => {
-                              setSelectedItem(item);
-                              setDeleteDialog(true);
-                            }}
-                          >
-                            <Delete style={{ color: "maroon" }} />
-                          </IconButton>
-                        </div>
-                      </div>
-                      <Divider />
-                    </>
-                  );
-                })}
+                <div style={{ position: "absolute", top: 5, right: 50 }}>
+                  <Tooltip title="Create New Item" aria-label="add">
+                    <Fab color="secondary" onClick={() => setAddItem(true)}>
+                      <Add />
+                    </Fab>
+                  </Tooltip>
+                </div>
               </div>
-            )}
-          </Paper>
-          <MenuItemForm
-            open={addItem}
-            setOpen={setAddItem}
-            edit={editing}
-            setEditing={setEditing}
-            item={selectedItem}
-            updateItem={(data) => handleUpdateMenu(data)}
-          />
-          <ConfirmDialog
-            open={deleteDialog}
-            setOpen={setDeleteDialog}
-            item={selectedItem}
-            confirmDelete={() => handleDeleteItem()}
-          />
-        </>
-      )}
+              {foodMenu.length === 0 ? (
+                <>
+                  <Typography variant="h6">
+                    Currently you have no items in menu. Please add items to
+                    view them in this list.
+                  </Typography>
+                </>
+              ) : (
+                <div style={{ padding: 50, position: "relative" }}>
+                  {" "}
+                  {foodMenu.map((item) => {
+                    return (
+                      <>
+                        <div className="row" style={{ margin: 10 }}>
+                          <Typography
+                            variant="h5"
+                            style={{ fontWeight: "bold", marginRight: 20 }}
+                          >
+                            {item.itemName}
+                          </Typography>
+                          <Typography
+                            variant="h6"
+                            style={{ fontWeight: "bold", marginRight: 20 }}
+                          >
+                            $ {item.price}
+                          </Typography>
+                          <Chip
+                            label={
+                              item.availabilityStatus === 1
+                                ? "Available"
+                                : "Unavailable"
+                            }
+                            disabled={item.availabilityStatus === 0}
+                            style={{
+                              backgroundColor: "maroon",
+                              color: "white",
+                            }}
+                          />
+                          <div style={{ position: "absolute", right: 150 }}>
+                            <IconButton
+                              onClick={() => {
+                                setSelectedItem(item);
+                                setAddItem(true);
+                                setEditing(true);
+                              }}
+                            >
+                              <Edit style={{ color: "maroon" }} />
+                            </IconButton>
+                          </div>
+                          <div style={{ position: "absolute", right: 100 }}>
+                            <IconButton
+                              onClick={() => {
+                                setSelectedItem(item);
+                                setDeleteDialog(true);
+                              }}
+                            >
+                              <Delete style={{ color: "maroon" }} />
+                            </IconButton>
+                          </div>
+                        </div>
+                        <Divider />
+                      </>
+                    );
+                  })}
+                </div>
+              )}
+            </Paper>
+            <MenuItemForm
+              open={addItem}
+              setOpen={setAddItem}
+              edit={editing}
+              setEditing={setEditing}
+              item={selectedItem}
+              updateItem={(data) => handleUpdateMenu(data)}
+            />
+            <ConfirmDialog
+              open={deleteDialog}
+              setOpen={setDeleteDialog}
+              item={selectedItem}
+              confirmDelete={() => handleDeleteItem()}
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Logo from "../assets/images/logo.png";
-import { Button, Card, Paper, TextField, Typography } from "@material-ui/core";
+import {
+  Badge,
+  Button,
+  Card,
+  Paper,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import axios from "axios";
 import Chat from "../components/Chat";
 import { connect } from "react-redux";
@@ -37,7 +44,7 @@ const LandingPage = (props) => {
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center" style={{ position: "relative" }}>
       <img src={Logo} width="20%" alt="logo" />
       <div className="row" style={{ width: "100%" }}>
         <div className="col-2 text-center">
@@ -45,21 +52,35 @@ const LandingPage = (props) => {
             lhsAds.map((ad) => {
               return (
                 <>
-                  <Card
-                    elevation={3}
+                  <Badge
                     style={{
-                      padding: 20,
-                      backgroundColor: "maroon",
-                      color: "white",
+                      padding: 10,
+                      border: "2px dashed maroon",
+                      marginLeft: 20,
+                      marginBottom: 20,
                       width: "100%",
-                      margin: 20,
                     }}
+                    badgeContent="Ad"
+                    color="secondary"
                   >
-                    <Typography variant="h5" style={{ fontFamily: "cursive" }}>
-                      {ad.heading}
-                    </Typography>
-                    <Typography variant="body1">{ad.content}</Typography>
-                  </Card>
+                    <Card
+                      elevation={3}
+                      style={{
+                        padding: 20,
+                        backgroundColor: "maroon",
+                        color: "white",
+                        width: "100%",
+                      }}
+                    >
+                      <Typography
+                        variant="h5"
+                        style={{ fontFamily: "cursive" }}
+                      >
+                        {ad.heading}
+                      </Typography>
+                      <Typography variant="body1">{ad.content}</Typography>
+                    </Card>
+                  </Badge>
                 </>
               );
             })}
@@ -68,7 +89,7 @@ const LandingPage = (props) => {
           <div className="col-12 text-center">
             <Paper
               style={{
-                width: "60%",
+                width: "100%",
                 textAlign: "center",
                 margin: "auto",
               }}
@@ -109,7 +130,7 @@ const LandingPage = (props) => {
             {restaurantResults.length !== 0 && (
               <Paper
                 style={{
-                  width: "50%",
+                  width: "70%",
                   textAlign: "center",
                   margin: "auto",
                   maxHeight: "500px",
@@ -146,21 +167,34 @@ const LandingPage = (props) => {
             rhsAds.map((ad) => {
               return (
                 <>
-                  <Card
-                    elevation={3}
+                  <Badge
                     style={{
-                      padding: 20,
-                      backgroundColor: "maroon",
-                      color: "white",
+                      padding: 10,
+                      border: "2px dashed maroon",
+                      marginBottom: 20,
                       width: "100%",
-                      margin: 20,
                     }}
+                    badgeContent="Ad"
+                    color="secondary"
                   >
-                    <Typography variant="h5" style={{ fontFamily: "cursive" }}>
-                      {ad.heading}
-                    </Typography>
-                    <Typography variant="body1">{ad.content}</Typography>
-                  </Card>
+                    <Card
+                      elevation={3}
+                      style={{
+                        padding: 20,
+                        backgroundColor: "maroon",
+                        color: "white",
+                        width: "100%",
+                      }}
+                    >
+                      <Typography
+                        variant="h5"
+                        style={{ fontFamily: "cursive" }}
+                      >
+                        {ad.heading}
+                      </Typography>
+                      <Typography variant="body1">{ad.content}</Typography>
+                    </Card>
+                  </Badge>
                 </>
               );
             })}
@@ -171,8 +205,10 @@ const LandingPage = (props) => {
           style={{
             position: "absolute",
             right: 20,
+            bottom: 0,
             width: "25%",
             backgroundColor: "whitesmoke",
+            zIndex: "+1",
           }}
         >
           <Chat />
