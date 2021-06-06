@@ -18,6 +18,7 @@ import {
   KeyboardTimePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import ForgotPasswordForm from "../components/ForgotPasswordForm";
 
 const UserForm = (props) => {
   const [isCustomer, setIsCustomer] = useState(true);
@@ -35,6 +36,8 @@ const UserForm = (props) => {
     openingHoursTo: "",
   });
   const [isSignUp, setIsSignUp] = useState(false);
+  const [forgotPassword, setForgotPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   useEffect(() => {
     if (props.match.url === "/signup") {
@@ -55,6 +58,7 @@ const UserForm = (props) => {
   }, [props.user]);
 
   const handleSubmit = async () => {
+    setPasswordError(false);
     setFormDetails({ ...formDetails, customer: isCustomer });
     if (isSignUp) {
       return await axios
@@ -78,6 +82,8 @@ const UserForm = (props) => {
             res.data && props.setUser(res.data);
             localStorage.setItem("user", res.data.token);
             props.history.push("/");
+          } else {
+            res.data && setPasswordError(!res.data.signin);
           }
         })
         .catch((error) =>
@@ -131,6 +137,7 @@ const UserForm = (props) => {
             onChange={(e) =>
               setFormDetails({ ...formDetails, password: e.target.value })
             }
+            error={passwordError}
           />
           {isSignUp && (
             <>
@@ -241,6 +248,64 @@ const UserForm = (props) => {
             </>
           )}
         </div>
+        <div>
+          <Button
+            variant="contained"
+            style={{
+              textTransform: "inherit",
+              margin: 20,
+              backgroundColor: "maroon",
+              color: "white",
+            }}
+            onClick={() => {
+              if (isCustomer) {
+                handleSubmit();
+              } else {
+                setFormDetails({
+                  name: "",
+                  email: "",
+                  password: "",
+                  mobile: "",
+                  customer: true,
+                  abn: "",
+                  tableBookingStatus: 0,
+                  foodOrderStatus: 0,
+                });
+                setIsCustomer(true);
+              }
+            }}
+          >
+            Sign {isSignUp ? "Up" : "In"} {!isCustomer ? "as Customer" : ""}
+          </Button>
+          <Button
+            variant="contained"
+            style={{
+              textTransform: "inherit",
+              margin: 20,
+              backgroundColor: "maroon",
+              color: "white",
+            }}
+            onClick={() => {
+              if (isCustomer) {
+                setFormDetails({
+                  name: "",
+                  email: "",
+                  password: "",
+                  mobile: "",
+                  customer: false,
+                  abn: "",
+                  tableBookingStatus: 0,
+                  foodOrderStatus: 0,
+                });
+                setIsCustomer(false);
+              } else {
+                handleSubmit();
+              }
+            }}
+          >
+            Sign {isSignUp ? "Up" : "In"} {isCustomer ? "as Business" : ""}
+          </Button>
+        </div>
         <Button
           variant="contained"
           style={{
@@ -249,55 +314,16 @@ const UserForm = (props) => {
             backgroundColor: "maroon",
             color: "white",
           }}
-          onClick={() => {
-            if (isCustomer) {
-              handleSubmit();
-            } else {
-              setFormDetails({
-                name: "",
-                email: "",
-                password: "",
-                mobile: "",
-                customer: true,
-                abn: "",
-                tableBookingStatus: 0,
-                foodOrderStatus: 0,
-              });
-              setIsCustomer(true);
-            }
-          }}
+          onClick={() => setForgotPassword(true)}
         >
-          Sign {isSignUp ? "Up" : "In"} {!isCustomer ? "as Customer" : ""}
-        </Button>
-        <Button
-          variant="contained"
-          style={{
-            textTransform: "inherit",
-            margin: 20,
-            backgroundColor: "maroon",
-            color: "white",
-          }}
-          onClick={() => {
-            if (isCustomer) {
-              setFormDetails({
-                name: "",
-                email: "",
-                password: "",
-                mobile: "",
-                customer: false,
-                abn: "",
-                tableBookingStatus: 0,
-                foodOrderStatus: 0,
-              });
-              setIsCustomer(false);
-            } else {
-              handleSubmit();
-            }
-          }}
-        >
-          Sign {isSignUp ? "Up" : "In"} {isCustomer ? "as Business" : ""}
+          Forgot password?
         </Button>
       </Paper>
+      <ForgotPasswordForm
+        open={forgotPassword}
+        setOpen={setForgotPassword}
+        isCustomer={isCustomer}
+      />
     </div>
   );
 };

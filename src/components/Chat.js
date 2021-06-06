@@ -49,7 +49,7 @@ const Chat = (props) => {
                 variant="h5"
                 style={{ marginTop: 12, fontWeight: "bold" }}
               >
-                Live Chat
+                Global Chat
               </Typography>
             </div>
             <IconButton
@@ -110,7 +110,7 @@ const Chat = (props) => {
         >
           <div className="col-12">
             <Typography variant="h5" style={{ marginTop: 12 }}>
-              Live Chat
+              Global Chat
             </Typography>
           </div>
           <IconButton

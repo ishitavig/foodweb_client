@@ -11,6 +11,8 @@ import BlogFrom from "./containers/BlogForm";
 import RestaurantOption from "./containers/RestaurantOption";
 import Advertisements from "./containers/Business/Advertisements";
 import Profile from "./containers/Profile";
+import FoodOrder from "./containers/Customer/FoodOrder";
+import ResetPassword from "./containers/ResetPassword";
 
 const App = () => {
   const token = localStorage.getItem("user");
@@ -54,6 +56,12 @@ const App = () => {
         </Route>
         <Route exact path="/profile">
           <MainLayout component={Profile} />
+        </Route>
+        <Route exact path="/foodOrder/:businessId">
+          <MainLayout component={FoodOrder} />
+        </Route>
+        <Route exact path="/resetPassword/:token">
+          <MainLayout component={ResetPassword} />
         </Route>
       </Switch>
     </div>

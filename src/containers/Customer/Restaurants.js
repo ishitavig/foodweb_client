@@ -3,6 +3,7 @@ import axios from "axios";
 import { Paper, Card, Typography, Button } from "@material-ui/core";
 import moment from "moment";
 import TableBooking from "../../components/TableBookingForm";
+import { withRouter } from "react-router-dom";
 
 const Restaurants = (props) => {
   const [restaurants, setRestaurants] = useState([]);
@@ -71,17 +72,30 @@ const Restaurants = (props) => {
                           : "No information available"}
                       </b>
                     </Typography>
-                    <Button
-                      variant="contained"
-                      style={{ marginRight: 10 }}
-                      onClick={() => {
-                        setSelectedRestaurant(restaurant);
-                        setBookTable(!bookTable);
-                      }}
-                    >
-                      Book a Table
-                    </Button>
-                    <Button variant="contained">Order Food</Button>
+                    {restaurant.tableBookingStatus === 1 && (
+                      <Button
+                        variant="contained"
+                        style={{ marginRight: 10 }}
+                        onClick={() => {
+                          setSelectedRestaurant(restaurant);
+                          setBookTable(!bookTable);
+                        }}
+                      >
+                        Book a Table
+                      </Button>
+                    )}
+                    {restaurant.foodOrderStatus === 1 && (
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          props.history.push(
+                            `/foodOrder/${restaurant.businessId}`
+                          );
+                        }}
+                      >
+                        Order Food
+                      </Button>
+                    )}
                   </Card>
                 </Paper>
               </div>
@@ -98,4 +112,4 @@ const Restaurants = (props) => {
   );
 };
 
-export default Restaurants;
+export default withRouter(Restaurants);

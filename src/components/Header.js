@@ -69,12 +69,14 @@ const Header = (props) => {
           >
             Restaurant Bookings/ Order Online
           </Button>
-          <Button
-            style={{ marginRight: 10, color: "white" }}
-            onClick={() => props.history.push("/advertisements")}
-          >
-            Advertisements
-          </Button>
+          {props.user.businessId && (
+            <Button
+              style={{ marginRight: 10, color: "white" }}
+              onClick={() => props.history.push("/advertisements")}
+            >
+              Advertisements
+            </Button>
+          )}
           <Button
             style={{ marginRight: 10, color: "white" }}
             onClick={() => props.history.push("/blogs")}

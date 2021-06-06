@@ -37,11 +37,10 @@ const TableBooking = (props) => {
 
   const handleBooking = async () => {
     if (props.user && props.user.user) {
-      const result = await axios.post(
+      await axios.post(
         `http://localhost:9000/restaurants/tableBooking/${restaurant.businessId}/${props.user.user.customerId}`,
         bookingDetails
       );
-      console.log(result, "result");
     }
   };
 
