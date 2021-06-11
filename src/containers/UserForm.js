@@ -71,7 +71,7 @@ const UserForm = (props) => {
     } else {
       return await axios
         .post(
-          `${SERVER_LINK}/users/${isCustomer ? "customer" : "business"}/signin`,
+          `/users/${isCustomer ? "customer" : "business"}/signin`,
           formDetails
         )
         .then((res) => {
