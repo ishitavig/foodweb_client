@@ -17,7 +17,9 @@ import MenuItemForm from "../../components/MenuItemForm";
 import axios from "axios";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import { updateUser } from "../../store/actions/usersAction";
+import OrderDetails from "../../components/OrderDetails";
 import moment from "moment";
+import { SERVER_LINK } from "../constants";
 
 const Options = (props) => {
   const [tableBooking, setTableBooking] = useState(0);
@@ -43,9 +45,10 @@ const Options = (props) => {
     const fetchMenu = async () => {
       if (props.user && props.user.user && props.user.user.businessId) {
         const result = await axios.get(
-          `http://localhost:9000/restaurants/menu/${props.user.user.businessId}/getAll`
+          `${SERVER_LINK}/restaurants/menu/${props.user.user.businessId}/getAll`
         );
         if (result.data && result.data.length !== 0) {
+          console.log(result.data, "data");
           setFoodMenu(result.data);
         } else {
           setFoodMenu([]);
@@ -57,7 +60,7 @@ const Options = (props) => {
 
   const handleDeleteItem = async () => {
     await axios.delete(
-      `http://localhost:9000/restaurants/deleteMenuItem/${props.user.user.businessId}/${selectedItem.itemId}`
+      `${SERVER_LINK}/restaurants/deleteMenuItem/${props.user.user.businessId}/${selectedItem.itemId}`
     );
     setFoodMenu(
       foodMenu.filter((item) => +item.itemId !== +selectedItem.itemId)
@@ -82,7 +85,7 @@ const Options = (props) => {
   const updateTableBooking = async () => {
     setTableBooking(tableBooking === 1 ? 0 : 1);
     await axios.put(
-      `http://localhost:9000/users/business/${props.user.user.businessId}`,
+      `${SERVER_LINK}/users/business/${props.user.user.businessId}`,
       { tableBookingStatus: tableBooking === 1 ? 0 : 1 }
     );
     if (props.user && props.user.user) {
@@ -98,7 +101,7 @@ const Options = (props) => {
   const updateOnlineFoodOrder = async () => {
     setOnlineFoodOrder(onlineFoodOrder === 1 ? 0 : 1);
     await axios.put(
-      `http://localhost:9000/users/business/${props.user.user.businessId}`,
+      `${SERVER_LINK}/users/business/${props.user.user.businessId}`,
       { foodOrderStatus: onlineFoodOrder === 1 ? 0 : 1 }
     );
     if (props.user && props.user.user) {
@@ -115,7 +118,7 @@ const Options = (props) => {
     const fetchTableBookings = async () => {
       await axios
         .get(
-          `http://localhost:9000/restaurants/getTableBookings/business/${props.user.user.businessId}`
+          `${SERVER_LINK}/restaurants/getTableBookings/business/${props.user.user.businessId}`
         )
         .then((result) => {
           if (result.data) {
@@ -129,7 +132,7 @@ const Options = (props) => {
     const fetchFoodOrders = async () => {
       await axios
         .get(
-          `http://localhost:9000/restaurants/getFoodOrders/business/${props.user.user.businessId}`
+          `${SERVER_LINK}/restaurants/getFoodOrders/business/${props.user.user.businessId}`
         )
         .then((result) => {
           if (result.data) {
@@ -432,6 +435,11 @@ const Options = (props) => {
               setOpen={setDeleteDialog}
               item={selectedItem}
               confirmDelete={() => handleDeleteItem()}
+            />
+            <OrderDetails
+              open={viewOrder}
+              setOpen={setViewOrder}
+              order={selectedOrder}
             />
           </>
         )}

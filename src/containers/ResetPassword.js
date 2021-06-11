@@ -3,6 +3,7 @@ import { Paper, TextField, Typography, Button } from "@material-ui/core";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import { withRouter } from "react-router";
+import { SERVER_LINK } from "../constants";
 
 const ResetPassword = (props) => {
   const { token } = props.match.params;
@@ -22,8 +23,8 @@ const ResetPassword = (props) => {
 
   const handleReset = async () => {
     await axios
-      .put(
-        `http://localhost:9000/users/${
+      .post(
+        `${SERVER_LINK}/users/${
           isCustomer ? "customer" : "business"
         }/resetPassword`,
         {

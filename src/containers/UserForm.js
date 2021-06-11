@@ -19,6 +19,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import ForgotPasswordForm from "../components/ForgotPasswordForm";
+import { SERVER_LINK } from "../constants";
 
 const UserForm = (props) => {
   const [isCustomer, setIsCustomer] = useState(true);
@@ -63,18 +64,14 @@ const UserForm = (props) => {
     if (isSignUp) {
       return await axios
         .post(
-          `http://localhost:9000/users/${
-            isCustomer ? "customer" : "business"
-          }/signup`,
+          `${SERVER_LINK}/users/${isCustomer ? "customer" : "business"}/signup`,
           formDetails
         )
         .then(() => props.history.push("/"));
     } else {
       return await axios
         .post(
-          `http://localhost:9000/users/${
-            isCustomer ? "customer" : "business"
-          }/signin`,
+          `${SERVER_LINK}/users/${isCustomer ? "customer" : "business"}/signin`,
           formDetails
         )
         .then((res) => {

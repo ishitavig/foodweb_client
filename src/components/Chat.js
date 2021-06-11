@@ -5,13 +5,14 @@ import io from "socket.io-client";
 import { withRouter } from "react-router-dom";
 import MinimizeIcon from "@material-ui/icons/Minimize";
 import CloseIcon from "@material-ui/icons/Close";
+import { SERVER_LINK } from "../constants";
 
 const Chat = (props) => {
   const [messages, setMessages] = useState([]);
   const [senderMessage, setSenderMessage] = useState("");
   const [chatboxOpen, setChatboxOpen] = useState(false);
 
-  const socket = io("http://localhost:9000", {
+  const socket = io(SERVER_LINK, {
     transports: ["websocket"],
     upgrade: false,
   });
@@ -41,7 +42,6 @@ const Chat = (props) => {
             position: "relative",
             cursor: "pointer",
           }}
-          onClick={() => setChatboxOpen(!chatboxOpen)}
         >
           <div className="row text-center">
             <div className="col-12">

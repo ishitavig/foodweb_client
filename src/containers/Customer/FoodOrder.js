@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { connect } from "react-redux";
 import FoodPaymentForm from "../../components/FoodPaymentForm";
+import { SERVER_LINK } from "../constants";
 
 const FoodOrder = (props) => {
   const { businessId } = props.match.params;
@@ -16,12 +17,13 @@ const FoodOrder = (props) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [orderDetails, setOrderDetails] = useState({ address: "", mobile: "" });
   const [purchase, setPurchase] = useState(false);
+  const [totalBill, setTotalBill] = useState(0);
 
   useEffect(() => {
     const fetchMenu = async () => {
       if (businessId) {
         const result = await axios.get(
-          `http://localhost:9000/restaurants/getAvailableMenu/${businessId}`
+          `${SERVER_LINK}/restaurants/getAvailableMenu/${businessId}`
         );
         if (result.data && result.data.length !== 0) {
           setFoodMenu(result.data);
@@ -34,12 +36,16 @@ const FoodOrder = (props) => {
   }, [businessId]);
 
   const handleOrder = async () => {
-    console.log(Object.entries(orderDetails, "this"));
+    const prices = selectedItems.map((i) =>
+      foodMenu.find((r) => +r.itemId === +i)
+        ? foodMenu.find((r) => +r.itemId === +i).price
+        : 0
+    );
+    setTotalBill(prices.reduce((a, b) => a + b, 0));
     if (
       Object.entries(orderDetails).filter((entry) => entry[1] === "").length ===
       0
     ) {
-      console.log("here");
       setPurchase(true);
     }
   };
@@ -171,6 +177,8 @@ const FoodOrder = (props) => {
         orderDetails={orderDetails}
         selectedItems={selectedItems}
         businessId={businessId}
+        totalBill={totalBill}
+        setTotalBill={setTotalBill}
       />
     </>
   );

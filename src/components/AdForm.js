@@ -20,6 +20,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { connect } from "react-redux";
+import { SERVER_LINK } from "../constants";
 
 const AdForm = (props) => {
   const { open } = props;
@@ -27,7 +28,7 @@ const AdForm = (props) => {
   const [adDetails, setAdDetails] = useState({
     heading: "",
     content: "",
-    visibilityStatus: true,
+    visibilityStatus: false,
     startDate: moment(),
     endDate: moment().add("days", 7),
     planId: props.user.planId,
@@ -72,7 +73,7 @@ const AdForm = (props) => {
     if (props.user && props.user.businessId) {
       if (editing && props.item) {
         await axios.put(
-          `http://localhost:9000/advertisements/update/${props.user.businessId}/${props.item.adId}`,
+          `${SERVER_LINK}/advertisements/update/${props.user.businessId}/${props.item.adId}`,
           adDetails
         );
         props.updateItem({ ...props.item, ...adDetails });
@@ -80,7 +81,7 @@ const AdForm = (props) => {
       } else {
         await axios
           .post(
-            `http://localhost:9000/advertisements/create/${props.user.businessId}`,
+            `${SERVER_LINK}/advertisements/create/${props.user.businessId}`,
             adDetails
           )
           .then(() => {

@@ -65,6 +65,16 @@ const Header = (props) => {
         <div style={{ position: "absolute", right: "15%" }} className="row">
           <Button
             style={{ marginRight: 10, color: "white" }}
+            onClick={() =>
+              window.open(
+                "https://www.nsw.gov.au/covid-19/covid-safe/hospitality"
+              )
+            }
+          >
+            COVID-19 NSW ADVISORY for Restaurants
+          </Button>
+          <Button
+            style={{ marginRight: 10, color: "white" }}
             onClick={() => props.history.push("/restaurants")}
           >
             Restaurant Bookings/ Order Online

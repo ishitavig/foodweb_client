@@ -18,6 +18,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { withRouter } from "react-router";
+import { SERVER_LINK } from "../constants";
 
 const Profile = (props) => {
   const [userDetails, setUserDetails] = useState({});
@@ -38,7 +39,7 @@ const Profile = (props) => {
 
   const updateDetails = async () => {
     await axios.put(
-      `http://localhost:9000/users/${isCustomer ? "customer" : "business"}/${
+      `${SERVER_LINK}/users/${isCustomer ? "customer" : "business"}/${
         isCustomer ? userDetails.customerId : userDetails.businessId
       }`,
       userDetails

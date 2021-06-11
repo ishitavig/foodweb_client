@@ -3,7 +3,9 @@ import { Add } from "@material-ui/icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 import blogBackground from "../assets/images/blogBackground.jpg";
+import { SERVER_LINK } from "../constants";
 
 const Blogs = (props) => {
   const [blogList, setBlogList] = useState([]);
@@ -11,7 +13,7 @@ const Blogs = (props) => {
 
   useEffect(() => {
     const fetchBlogs = async () => {
-      const result = await axios.get(`http://localhost:9000/blogs/getAll`);
+      const result = await axios.get(`${SERVER_LINK}/blogs/getAll`);
       if (result.data && result.data.length !== 0) {
         setBlogList(result.data);
       } else {
@@ -47,7 +49,11 @@ const Blogs = (props) => {
               <Tooltip title="Create New Blog" aria-label="add">
                 <Fab
                   color="secondary"
-                  onClick={() => props.history.push("/createBlog")}
+                  onClick={() => {
+                    props.user
+                      ? props.history.push("/createBlog")
+                      : props.history.push("/signin");
+                  }}
                 >
                   <Add />
                 </Fab>
@@ -71,6 +77,7 @@ const Blogs = (props) => {
                       variant="h6"
                       style={{ cursor: "pointer", margin: 10 }}
                       onClick={() => {
+                        console.log(blog, "bog");
                         setViewBlog(blog);
                       }}
                     >
@@ -104,6 +111,18 @@ const Blogs = (props) => {
                 >
                   {viewBlog.heading}
                 </Typography>
+                <Typography
+                  variant="h6"
+                  style={{
+                    fontWeight: "bold",
+                    fontFamily: "cursive",
+                    color: "white",
+                    textAlign: "center",
+                    marginTop: 10,
+                  }}
+                >
+                  - {viewBlog.name}
+                </Typography>
               </Paper>
               <Paper style={{ padding: 20 }}>
                 <Typography variant="h6">{viewBlog.content}</Typography>
@@ -116,4 +135,14 @@ const Blogs = (props) => {
   );
 };
 
-export default withRouter(Blogs);
+const mapStateToProps = (state) => {
+  return {
+    user: state.user.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Blogs));

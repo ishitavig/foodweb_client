@@ -12,6 +12,7 @@ import axios from "axios";
 import Chat from "../components/Chat";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { SERVER_LINK } from "../constants";
 
 const LandingPage = (props) => {
   const [place, setPlace] = useState("");
@@ -21,16 +22,14 @@ const LandingPage = (props) => {
 
   useEffect(() => {
     const fetchAds = async () => {
-      await axios
-        .get(`http://localhost:9000/advertisements/getAllAds`)
-        .then((res) => {
-          if (res.data) {
-            const list = res.data;
-            const halfAds = Math.ceil(list.length / 2);
-            setLhsAds(list.splice(0, halfAds));
-            setRhsAds(list.splice(-halfAds));
-          }
-        });
+      await axios.get(`${SERVER_LINK}/advertisements/getAllAds`).then((res) => {
+        if (res.data) {
+          const list = res.data;
+          const halfAds = Math.ceil(list.length / 2);
+          setLhsAds(list.splice(0, halfAds));
+          setRhsAds(list.splice(-halfAds));
+        }
+      });
     };
     fetchAds();
   }, []);
@@ -38,7 +37,7 @@ const LandingPage = (props) => {
   const searchRestaurants = async () => {
     setRestaurantResults([]);
     const result = await axios.post(
-      `http://localhost:9000/users/search-restaurants?city=${place}`
+      `${SERVER_LINK}/users/search-restaurants?city=${place}`
     );
     setRestaurantResults(result.data);
   };

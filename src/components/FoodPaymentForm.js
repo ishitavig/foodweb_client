@@ -11,9 +11,10 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { updateUser } from "../store/actions/usersAction";
+import { SERVER_LINK } from "../constants";
 
 const FoodOrderForm = (props) => {
-  const { open, businessId, selectedItems, orderDetails } = props;
+  const { open, businessId, selectedItems, orderDetails, totalBill } = props;
   const [openForm, setOpenForm] = useState(false);
   const elements = useElements();
   const stripe = useStripe();
@@ -24,6 +25,7 @@ const FoodOrderForm = (props) => {
 
   const handleClose = () => {
     setOpenForm(false);
+    props.setTotalBill(0);
     props.setOpen(false);
   };
 
@@ -34,7 +36,7 @@ const FoodOrderForm = (props) => {
 
     const cardElements = elements.getElement(CardElement);
     const result = await axios.post(
-      `http://localhost:9000/restaurants/createFoodOrder/${businessId}/${props.user.customerId}`,
+      `${SERVER_LINK}/restaurants/createFoodOrder/${businessId}/${props.user.customerId}`,
       { itemIds: selectedItems, ...orderDetails }
     );
     if (result.data) {
@@ -66,7 +68,7 @@ const FoodOrderForm = (props) => {
       fullWidth={true}
     >
       <DialogTitle style={{ textAlign: "center" }}>
-        Complete Payment
+        Complete Payment for ${parseFloat(totalBill).toFixed(2)}
       </DialogTitle>
       <DialogContent>
         <CardElement />

@@ -87,7 +87,7 @@ const OrderDetails = (props) => {
           </Table>
           <div>
             <Typography variant="body1" style={{ margin: 10 }}>
-              Total bill: ${orderInfo.billingCost}
+              Total bill: ${parseFloat(orderInfo.billingCost).toFixed(2) / 100}
             </Typography>
           </div>
         </DialogContent>

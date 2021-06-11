@@ -17,6 +17,7 @@ import PurchaseForm from "../../components/PurchaseForm";
 import AdForm from "../../components/AdForm";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import moment from "moment";
+import { SERVER_LINK } from "../constants";
 
 const Advertisements = (props) => {
   const [plan, setPlan] = useState(null);
@@ -32,7 +33,7 @@ const Advertisements = (props) => {
   useEffect(() => {
     const fetchAdPlans = async () => {
       await axios
-        .get(`http://localhost:9000/advertisements/getAdPlans`)
+        .get(`${SERVER_LINK}/advertisements/getAdPlans`)
         .then((res) => {
           if (res.data) {
             setAvailablePlans(res.data);
@@ -54,7 +55,7 @@ const Advertisements = (props) => {
     const fetchAds = async () => {
       await axios
         .get(
-          `http://localhost:9000/advertisements/getAdsByBusinessId/${props.user.businessId}`
+          `${SERVER_LINK}/advertisements/getAdsByBusinessId/${props.user.businessId}`
         )
         .then((result) => {
           if (result.data) {
@@ -69,7 +70,7 @@ const Advertisements = (props) => {
 
   const handleDeleteAd = async () => {
     await axios.delete(
-      `http://localhost:9000/advertisements/delete/${props.user.businessId}/${selectedAd.adId}`
+      `${SERVER_LINK}/advertisements/delete/${props.user.businessId}/${selectedAd.adId}`
     );
     setAds(ads.filter((item) => +item.adId !== +selectedAd.adId));
   };
