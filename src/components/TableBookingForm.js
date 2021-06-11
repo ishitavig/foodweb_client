@@ -11,6 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
+import { SERVER_LINK } from "../constants";
 
 const TableBooking = (props) => {
   const { open, restaurant } = props;
@@ -39,7 +40,7 @@ const TableBooking = (props) => {
     if (props.user && props.user.user) {
       await axios
         .post(
-          `/restaurants/tableBooking/${restaurant.businessId}/${props.user.user.customerId}`,
+          `${SERVER_LINK}/restaurants/tableBooking/${restaurant.businessId}/${props.user.user.customerId}`,
           bookingDetails
         )
         .then(() => handleClose());

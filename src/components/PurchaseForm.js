@@ -10,6 +10,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { updateUser } from "../store/actions/usersAction";
+import { SERVER_LINK } from "../constants";
 
 const PurchaseForm = (props) => {
   const { open, plan } = props;
@@ -33,7 +34,8 @@ const PurchaseForm = (props) => {
 
     const cardElements = elements.getElement(CardElement);
     const result = await axios.post(
-      `/advertisements/purchasePlan/${+props.user.businessId}/${+plan.planId}`,
+      `${SERVER_LINK}/advertisements/purchasePlan/${+props.user
+        .businessId}/${+plan.planId}`,
       { email: props.user.email }
     );
     if (result.data) {

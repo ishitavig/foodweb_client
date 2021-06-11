@@ -11,6 +11,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { updateUser } from "../store/actions/usersAction";
+import { SERVER_LINK } from "../constants";
 
 const FoodOrderForm = (props) => {
   const { open, businessId, selectedItems, orderDetails, totalBill } = props;
@@ -35,7 +36,7 @@ const FoodOrderForm = (props) => {
 
     const cardElements = elements.getElement(CardElement);
     const result = await axios.post(
-      `/restaurants/createFoodOrder/${businessId}/${props.user.customerId}`,
+      `${SERVER_LINK}/restaurants/createFoodOrder/${businessId}/${props.user.customerId}`,
       { itemIds: selectedItems, ...orderDetails }
     );
     if (result.data) {

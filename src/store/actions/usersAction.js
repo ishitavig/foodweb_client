@@ -1,6 +1,7 @@
 import axios from "axios";
 import { SET_USER } from "./actionTypes";
 import jwt from "jsonwebtoken";
+import { SERVER_LINK } from "../../constants";
 
 export const setUser = (user) => ({
   type: SET_USER,
@@ -9,7 +10,7 @@ export const setUser = (user) => ({
 
 export const updateUser = (userType, userId) => async (dispatch) => {
   await axios
-    .get(`/users/${userType}/${userId}`)
+    .get(`${SERVER_LINK}/users/${userType}/${userId}`)
     .then(async (res) => {
       if (res.data) {
         localStorage.setItem("user", res.data.token);
