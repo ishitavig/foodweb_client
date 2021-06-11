@@ -9,7 +9,6 @@ import {
 } from "@material-ui/core";
 import { connect } from "react-redux";
 import FoodPaymentForm from "../../components/FoodPaymentForm";
-import { SERVER_LINK } from "../../constants";
 
 const FoodOrder = (props) => {
   const { businessId } = props.match.params;
@@ -23,7 +22,7 @@ const FoodOrder = (props) => {
     const fetchMenu = async () => {
       if (businessId) {
         const result = await axios.get(
-          `${SERVER_LINK}/restaurants/getAvailableMenu/${businessId}`
+          `/restaurants/getAvailableMenu/${businessId}`
         );
         if (result.data && result.data.length !== 0) {
           setFoodMenu(result.data);

@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import blogBackground from "../assets/images/blogBackground.jpg";
-import { SERVER_LINK } from "../constants";
 
 const Blogs = (props) => {
   const [blogList, setBlogList] = useState([]);
@@ -13,7 +12,7 @@ const Blogs = (props) => {
 
   useEffect(() => {
     const fetchBlogs = async () => {
-      const result = await axios.get(`${SERVER_LINK}/blogs/getAll`);
+      const result = await axios.get(`/blogs/getAll`);
       if (result.data && result.data.length !== 0) {
         setBlogList(result.data);
       } else {

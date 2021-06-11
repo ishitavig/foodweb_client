@@ -3,14 +3,13 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import axios from "axios";
-import { SERVER_LINK } from "../constants";
 
 const BlogForm = (props) => {
   const [blogContent, setBlogContent] = useState({ heading: "", content: "" });
 
   const handleSubmit = async () => {
     return await axios
-      .post(`${SERVER_LINK}/blogs/create`, {
+      .post(`/blogs/create`, {
         ...blogContent,
         [`${props.user.businessId ? "businessId" : "customerId"}`]:
           props.user.businessId || props.user.customerId,

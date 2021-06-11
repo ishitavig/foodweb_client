@@ -8,7 +8,6 @@ import {
   TextField,
 } from "@material-ui/core";
 import axios from "axios";
-import { SERVER_LINK } from "../constants";
 
 const ForgotPasswordForm = (props) => {
   const { open, isCustomer } = props;
@@ -27,12 +26,9 @@ const ForgotPasswordForm = (props) => {
 
   const handleForgotPassword = async () => {
     await axios
-      .post(
-        `${SERVER_LINK}/users/${
-          isCustomer ? "customer" : "business"
-        }/forgotPassword`,
-        { email }
-      )
+      .post(`/users/${isCustomer ? "customer" : "business"}/forgotPassword`, {
+        email,
+      })
       .then(() => handleClose());
   };
 

@@ -20,7 +20,6 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { connect } from "react-redux";
-import { SERVER_LINK } from "../constants";
 
 const AdForm = (props) => {
   const { open } = props;
@@ -73,17 +72,14 @@ const AdForm = (props) => {
     if (props.user && props.user.businessId) {
       if (editing && props.item) {
         await axios.put(
-          `${SERVER_LINK}/advertisements/update/${props.user.businessId}/${props.item.adId}`,
+          `/advertisements/update/${props.user.businessId}/${props.item.adId}`,
           adDetails
         );
         props.updateItem({ ...props.item, ...adDetails });
         handleClose();
       } else {
         await axios
-          .post(
-            `${SERVER_LINK}/advertisements/create/${props.user.businessId}`,
-            adDetails
-          )
+          .post(`/advertisements/create/${props.user.businessId}`, adDetails)
           .then(() => {
             handleClose();
           });

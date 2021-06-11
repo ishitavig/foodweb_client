@@ -17,7 +17,6 @@ import { AttachMoney } from "@material-ui/icons";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { SERVER_LINK } from "../constants";
 
 const MenuItemForm = (props) => {
   const { open } = props;
@@ -61,14 +60,14 @@ const MenuItemForm = (props) => {
     if (props.user && props.user.user && props.user.user.businessId) {
       if (editing && props.item) {
         await axios.put(
-          `${SERVER_LINK}/restaurants/updateMenuItem/${props.user.user.businessId}/${props.item.itemId}`,
+          `/restaurants/updateMenuItem/${props.user.user.businessId}/${props.item.itemId}`,
           itemDetails
         );
         props.updateItem({ ...props.item, ...itemDetails });
         handleClose();
       } else {
         await axios.post(
-          `${SERVER_LINK}/restaurants/addMenuItem/${props.user.user.businessId}`,
+          `/restaurants/addMenuItem/${props.user.user.businessId}`,
           itemDetails
         );
         props.updateItem({ ...props.item, ...itemDetails });

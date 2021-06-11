@@ -3,7 +3,6 @@ import { Paper, TextField, Typography, Button } from "@material-ui/core";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import { withRouter } from "react-router";
-import { SERVER_LINK } from "../constants";
 
 const ResetPassword = (props) => {
   const { token } = props.match.params;
@@ -23,15 +22,10 @@ const ResetPassword = (props) => {
 
   const handleReset = async () => {
     await axios
-      .post(
-        `${SERVER_LINK}/users/${
-          isCustomer ? "customer" : "business"
-        }/resetPassword`,
-        {
-          userEmail,
-          ...passwordObject,
-        }
-      )
+      .post(`/users/${isCustomer ? "customer" : "business"}/resetPassword`, {
+        userEmail,
+        ...passwordObject,
+      })
       .then(() => {
         props.history.push("/signin");
       });

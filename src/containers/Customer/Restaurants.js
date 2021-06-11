@@ -6,7 +6,6 @@ import TableBooking from "../../components/TableBookingForm";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import OrderDetails from "../../components/OrderDetails";
-import { SERVER_LINK } from "../../constants";
 
 const Restaurants = (props) => {
   const [restaurants, setRestaurants] = useState([]);
@@ -19,7 +18,7 @@ const Restaurants = (props) => {
 
   useEffect(() => {
     const fetchRestaurants = async () => {
-      const result = await axios.get(`${SERVER_LINK}/restaurants/getAll`);
+      const result = await axios.get(`/restaurants/getAll`);
       if (result.data && result.data.length !== 0) {
         setRestaurants(result.data);
       } else {
@@ -32,9 +31,7 @@ const Restaurants = (props) => {
   useEffect(() => {
     const fetchTableBookings = async () => {
       await axios
-        .get(
-          `${SERVER_LINK}/restaurants/getTableBookings/customer/${props.user.customerId}`
-        )
+        .get(`/restaurants/getTableBookings/customer/${props.user.customerId}`)
         .then((result) => {
           if (result.data) {
             setTableBookings(result.data);
@@ -46,9 +43,7 @@ const Restaurants = (props) => {
 
     const fetchFoodOrders = async () => {
       await axios
-        .get(
-          `${SERVER_LINK}/restaurants/getFoodOrders/customer/${props.user.customerId}`
-        )
+        .get(`/restaurants/getFoodOrders/customer/${props.user.customerId}`)
         .then((result) => {
           if (result.data) {
             const groupOrders = result.data.reduce((r, a) => {

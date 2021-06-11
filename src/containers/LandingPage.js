@@ -12,7 +12,6 @@ import axios from "axios";
 import Chat from "../components/Chat";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { SERVER_LINK } from "../constants";
 
 const LandingPage = (props) => {
   const [place, setPlace] = useState("");
@@ -22,7 +21,7 @@ const LandingPage = (props) => {
 
   useEffect(() => {
     const fetchAds = async () => {
-      await axios.get(`${SERVER_LINK}/advertisements/getAllAds`).then((res) => {
+      await axios.get(`/advertisements/getAllAds`).then((res) => {
         if (res.data) {
           const list = res.data;
           const halfAds = Math.ceil(list.length / 2);
@@ -36,9 +35,7 @@ const LandingPage = (props) => {
 
   const searchRestaurants = async () => {
     setRestaurantResults([]);
-    const result = await axios.post(
-      `${SERVER_LINK}/users/search-restaurants?city=${place}`
-    );
+    const result = await axios.post(`/users/search-restaurants?city=${place}`);
     setRestaurantResults(result.data);
   };
 
