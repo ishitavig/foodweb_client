@@ -17,7 +17,7 @@ import PurchaseForm from "../../components/PurchaseForm";
 import AdForm from "../../components/AdForm";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import moment from "moment";
-import { SERVER_LINK } from "../constants";
+import { SERVER_LINK } from "../../constants";
 
 const Advertisements = (props) => {
   const [plan, setPlan] = useState(null);

@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { connect } from "react-redux";
 import FoodPaymentForm from "../../components/FoodPaymentForm";
-import { SERVER_LINK } from "../constants";
+import { SERVER_LINK } from "../../constants";
 
 const FoodOrder = (props) => {
   const { businessId } = props.match.params;

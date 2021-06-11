@@ -19,7 +19,7 @@ import ConfirmDialog from "../../components/ConfirmDialog";
 import { updateUser } from "../../store/actions/usersAction";
 import OrderDetails from "../../components/OrderDetails";
 import moment from "moment";
-import { SERVER_LINK } from "../constants";
+import { SERVER_LINK } from "../../constants";
 
 const Options = (props) => {
   const [tableBooking, setTableBooking] = useState(0);

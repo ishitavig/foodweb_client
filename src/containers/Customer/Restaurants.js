@@ -6,7 +6,7 @@ import TableBooking from "../../components/TableBookingForm";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import OrderDetails from "../../components/OrderDetails";
-import { SERVER_LINK } from "../constants";
+import { SERVER_LINK } from "../../constants";
 
 const Restaurants = (props) => {
   const [restaurants, setRestaurants] = useState([]);
