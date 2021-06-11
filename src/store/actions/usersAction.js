@@ -1,7 +1,7 @@
 import axios from "axios";
 import { SET_USER } from "./actionTypes";
 import jwt from "jsonwebtoken";
-import { SERVER_LINK } from "../constants";
+import { SERVER_LINK } from "../../constants";
 
 export const setUser = (user) => ({
   type: SET_USER,
